@@ -44,8 +44,7 @@ public class SpawnManager : MonoBehaviour
 
                     if (unitObject.TryGetComponent<IUnit>(out IUnit unit))
                     {
-                        unit.Initialize(unitData); 
-                        unit.Activate();
+                        unit.Initialize(unitData);
                     }
                     else
                     {

@@ -1,33 +1,19 @@
 using UnityEngine;
 
-public class Attacker : MonoBehaviour, IUnit
+public class Attacker : Unit
 {
-    private AttackerData attackerData; 
+    private AttackerData attackerData;
 
-    public void Initialize(UnitData data)
+    public override void Initialize(UnitData data)
     {
-        attackerData = data as AttackerData; 
-
+        attackerData = data as AttackerData;
         if (attackerData == null)
         {
             Debug.LogError("Invalid AttackerData assigned!");
+            return;
         }
-    }
 
-    public void Activate()
-    {
-        Debug.Log($"Attacker activated with normal speed: {attackerData.normalSpeed}, " +
-                  $"carrying speed: {attackerData.carryingSpeed}, pass speed: {attackerData.passSpeed}");
-    }
-
-    public void Deactivate()
-    {
-        Debug.Log("Attacker deactivated.");
-    }
-
-    public float GetSpeed()
-    {
-        return attackerData.normalSpeed;
+        base.Initialize(data);
     }
 
     public float GetCarryingSpeed()
