@@ -5,7 +5,7 @@ public class TurnManager : MonoBehaviour
 {
     public static event Action OnTurnSwitch;
     private int currentTurn = 1;
-
+    
     public void SwitchTurn()
     {
         currentTurn = (currentTurn == 1) ? 2 : 1;

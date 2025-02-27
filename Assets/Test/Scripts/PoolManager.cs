@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class PoolManager<T> where T : MonoBehaviour
+public class PoolManager<T> where T : Object
 {
     private Queue<T> poolQueue = new Queue<T>();
     private T prefab;
@@ -11,35 +11,38 @@ public class PoolManager<T> where T : MonoBehaviour
     {
         this.prefab = prefab;
         this.parentContainer = parent;
-
-        ExpandPool(initialSize); // Ensure pool is populated at the start
+        ExpandPool(initialSize);
     }
 
     public T GetFromPool(Vector3 position, Quaternion rotation)
     {
-        if (poolQueue.Count == 0)
-        {
-            ExpandPool(1); // Expand when needed
-        }
+        if (poolQueue.Count == 0) ExpandPool(1);
 
         T obj = poolQueue.Dequeue();
-        obj.transform.SetPositionAndRotation(position, rotation);
-        obj.gameObject.SetActive(true);
+
+        if (obj is GameObject gameObject)
+        {
+            gameObject.transform.SetPositionAndRotation(position, rotation);
+            gameObject.SetActive(true);
+        }
+
         return obj;
     }
 
     public void ReturnToPool(T obj)
     {
-        obj.gameObject.SetActive(false);
-        poolQueue.Enqueue(obj);
+        if (obj is GameObject gameObject)
+        {
+            gameObject.SetActive(false);
+            poolQueue.Enqueue(obj);
+        }
     }
 
     private void ExpandPool(int amount)
     {
         for (int i = 0; i < amount; i++)
         {
-            T obj = GameObject.Instantiate(prefab, parentContainer);
-            obj.gameObject.SetActive(false);
+            T obj = Object.Instantiate(prefab, parentContainer);
             poolQueue.Enqueue(obj);
         }
     }

@@ -4,13 +4,11 @@ public class SpawnManager : MonoBehaviour
 {
     private EnergySystem player1Energy;
     private EnergySystem player2Energy;
-    private TurnManager turnManager;
 
-    public void Initialize(EnergySystem p1Energy, EnergySystem p2Energy, TurnManager turnMgr)
+    public void Initialize(EnergySystem p1Energy, EnergySystem p2Energy)
     {
         player1Energy = p1Energy;
         player2Energy = p2Energy;
-        turnManager = turnMgr;
     }
 
     private void OnEnable()
@@ -25,18 +23,24 @@ public class SpawnManager : MonoBehaviour
 
     private void HandleInput(Vector3 spawnPosition, LandType landType)
     {
-        int currentPlayerID = turnManager.GetCurrentTurn(); // Get current player's turn
-        EnergySystem energySystem = (currentPlayerID == 1) ? player1Energy : player2Energy; // Select correct energy system
-
+        int playerID = (landType == LandType.Attacker) ? 1 : 2;
+        EnergySystem energy = (playerID == 1) ? player1Energy : player2Energy;
         UnitType unitType = (landType == LandType.Attacker) ? UnitType.Attacker : UnitType.Defender;
 
-        // Request energy deduction from the correct player
-        EventHolder.TriggerEnergyRequest(currentPlayerID, 2, (success) =>
+        EventHolder.TriggerEnergyRequest(playerID, 2, (success) =>
         {
             if (success)
             {
-                IUnit unit = GameManager.Instance.UnitFactory.CreateUnit(unitType, spawnPosition, Quaternion.identity);
-                unit.Activate();
+                GameObject unitObject = GameManager.Instance.UnitFactory.CreateUnit(unitType, spawnPosition, Quaternion.identity);
+
+                if (unitObject.TryGetComponent<IUnit>(out IUnit unit))
+                {
+                    unit.Activate();
+                }
+                else
+                {
+                    Debug.LogError($"Spawned unit of type {unitType} does not implement IUnit!");
+                }
             }
         });
     }

@@ -3,19 +3,19 @@ using System.Collections.Generic;
 
 public class UnitFactory
 {
-    private Dictionary<UnitType, PoolManager<MonoBehaviour>> unitPools;
+    private Dictionary<UnitType, PoolManager<GameObject>> unitPools;
 
-    public UnitFactory(Dictionary<UnitType, MonoBehaviour> prefabs, int poolSize)
+    public UnitFactory(Dictionary<UnitType, GameObject> prefabs, int poolSize)
     {
-        unitPools = new Dictionary<UnitType, PoolManager<MonoBehaviour>>();
+        unitPools = new Dictionary<UnitType, PoolManager<GameObject>>();
 
         foreach (var unitType in prefabs.Keys)
         {
-            unitPools[unitType] = new PoolManager<MonoBehaviour>(prefabs[unitType], poolSize);
+            unitPools[unitType] = new PoolManager<GameObject>(prefabs[unitType], poolSize);
         }
     }
 
-    public IUnit CreateUnit(UnitType type, Vector3 position, Quaternion rotation)
+    public GameObject CreateUnit(UnitType type, Vector3 position, Quaternion rotation)
     {
         if (!unitPools.ContainsKey(type))
         {
@@ -23,34 +23,28 @@ public class UnitFactory
             return null;
         }
 
-        MonoBehaviour unitObject = unitPools[type].GetFromPool(position, rotation);
-        IUnit unit = unitObject as IUnit;
+        GameObject unitObject = unitPools[type].GetFromPool(position, rotation);
 
-        if (unit != null)
+        if (unitObject != null)
         {
-            unit.Activate();
-            return unit;
+            unitObject.SetActive(true);
+            return unitObject;
         }
         else
         {
-            Debug.LogError($"Unit of type {type} does not implement IUnit.");
+            Debug.LogError($"Failed to spawn unit of type {type}.");
             return null;
         }
     }
 
-    public void ReturnUnit(IUnit unit)
+    public void ReturnUnit(GameObject unit)
     {
-        MonoBehaviour monoUnit = unit as MonoBehaviour;
-        if (monoUnit != null)
+        foreach (var pool in unitPools.Values)
         {
-            unit.Deactivate();
-            foreach (var pool in unitPools.Values)
+            if (pool.Contains(unit))
             {
-                if (pool.Contains(monoUnit))
-                {
-                    pool.ReturnToPool(monoUnit);
-                    return;
-                }
+                pool.ReturnToPool(unit);
+                return;
             }
         }
     }

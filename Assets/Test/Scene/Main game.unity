@@ -1510,7 +1510,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5feebed229dadbc4681abebcbb53b90b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitDatabase: {fileID: 0}
+  unitDatabase: {fileID: 11400000, guid: 6f678ba6a3cfcaf4aa4e0dada75a4bf8, type: 2}
 --- !u!1 &1406900687
 GameObject:
   m_ObjectHideFlags: 0
@@ -1834,7 +1834,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0938e338a1789dd4d8a19512d02b9ef9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  landType: 0
+  landType: 1
 --- !u!65 &1854628597
 BoxCollider:
   m_ObjectHideFlags: 0

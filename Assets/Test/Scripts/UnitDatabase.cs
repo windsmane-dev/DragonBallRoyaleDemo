@@ -10,12 +10,12 @@ public class UnitDatabase : ScriptableObject
     public class UnitEntry
     {
         public UnitType unitType;
-        public MonoBehaviour prefab;
+        public GameObject prefab; // Changed from MonoBehaviour to GameObject
     }
 
-    public Dictionary<UnitType, MonoBehaviour> GetUnitDictionary()
+    public Dictionary<UnitType, GameObject> GetUnitDictionary()
     {
-        Dictionary<UnitType, MonoBehaviour> unitDict = new Dictionary<UnitType, MonoBehaviour>();
+        Dictionary<UnitType, GameObject> unitDict = new Dictionary<UnitType, GameObject>();
         foreach (var entry in units)
         {
             if (entry.prefab != null)

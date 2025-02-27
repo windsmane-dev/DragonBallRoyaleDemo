@@ -56,7 +56,7 @@ public class GameManager : MonoBehaviour
             Debug.LogError("Unit Database is missing in GameManager!");
         }
 
-        spawnManager.Initialize(player1Energy, player2Energy, turnManager);
+        spawnManager.Initialize(player1Energy, player2Energy);
     }
 
     private T CreateManager<T>(string name) where T : Component
