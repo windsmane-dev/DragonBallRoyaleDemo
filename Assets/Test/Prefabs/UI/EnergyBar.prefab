@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4834720756284519502}
   - component: {fileID: 922472282247008476}
   - component: {fileID: 4474363484614363638}
+  - component: {fileID: 7463749778519477152}
   m_Layer: 5
   m_Name: EnergyBar
   m_TagString: Untagged
@@ -75,3 +76,16 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &7463749778519477152
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5830271495804015070}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9eeabc210da431a4b8253ae0f0941721, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  barImage: {fileID: 4474363484614363638}
