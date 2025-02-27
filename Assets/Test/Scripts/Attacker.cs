@@ -1,7 +1,9 @@
+using System.Collections;
 using UnityEngine;
 
 public class Attacker : Unit
 {
+    private IMovable movementHandler;
     private AttackerData attackerData;
 
     public override void Initialize(UnitData data)
@@ -14,15 +16,32 @@ public class Attacker : Unit
         }
 
         base.Initialize(data);
+        movementHandler = new MovementHandler(transform, data.normalSpeed, Vector3.forward);
     }
 
-    public float GetCarryingSpeed()
+    public override void Activate()
     {
-        return attackerData.carryingSpeed;
+        base.Activate();
+        StartCoroutine(Tick());
+
     }
 
-    public float GetPassSpeed()
+    IEnumerator Tick()
     {
-        return attackerData.passSpeed;
+        while(isActive)
+        {
+            movementHandler.Tick();
+            yield return new WaitForSeconds(Time.deltaTime);
+        }    
+    }
+
+    public void SetChaseBall(Vector3 ballPosition)
+    {
+        movementHandler.ChangeDirection((ballPosition - transform.position).normalized);
+    }
+
+    public void MoveStraight()
+    {
+        movementHandler.ChangeDirection(Vector3.forward);
     }
 }

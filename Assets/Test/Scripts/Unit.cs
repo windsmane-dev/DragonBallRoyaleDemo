@@ -18,7 +18,6 @@ public abstract class Unit : MonoBehaviour, IUnit
     {
         isActive = true;
         visualHandler.SetUnitColor(Color.white);
-        Debug.Log($"{gameObject.name} is now active!");
     }
 
     public virtual void Deactivate()

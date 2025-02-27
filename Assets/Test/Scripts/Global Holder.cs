@@ -95,3 +95,14 @@ public enum UnitType
     Attacker,
     Defender
 }
+
+/// <summary>
+/// Interface to handle movement of units
+/// </summary>
+public interface IMovable
+{
+    void Tick(); 
+    void ChangeSpeed(float newSpeed); 
+    void ChangeDirection(Vector3 newDirection); 
+}
+
