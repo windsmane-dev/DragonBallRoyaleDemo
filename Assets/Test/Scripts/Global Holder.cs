@@ -6,15 +6,20 @@ using UnityEngine;
 /// </summary>
 public static class EventHolder
 {
-    public static event Action OnGameStart;
-    public static event Action<Action<Vector3>> OnRequestLandPosition;
-
+    //Game Flow Events
+    public static event Action OnGameStart; 
+    public static event Action<Action<Vector3>> OnRequestLandPosition; 
+    //Ball Tracking Events
+    public static event Action<Action<Vector3, bool>> OnRequestBallStatus; 
+    public static event Action OnBallPickedUp; 
+    //Unit & Energy Events
     public static event Action<Vector3, LandType> OnInputReceived;
     public static event Action<int, int, Action<bool>> OnEnergyRequest;
     public static event Action<int, EnergySystem> OnEnergySystemInitialized;
     public static event Action<int, float, float> OnEnergyUpdated;
     public static event Action<UnitType, Action<UnitData>> OnUnitDataRequest;
 
+    //Game Flow Event Triggers
     public static void TriggerGameStart()
     {
         OnGameStart?.Invoke();
@@ -25,6 +30,18 @@ public static class EventHolder
         OnRequestLandPosition?.Invoke(callback);
     }
 
+    //Ball Tracking Event Triggers
+    public static void TriggerRequestBallStatus(Action<Vector3, bool> callback)
+    {
+        OnRequestBallStatus?.Invoke(callback);
+    }
+
+    public static void TriggerBallPickedUp()
+    {
+        OnBallPickedUp?.Invoke();
+    }
+
+    //Unit & Energy Event Triggers
     public static void TriggerInputReceived(Vector3 position, LandType landType)
     {
         OnInputReceived?.Invoke(position, landType);
@@ -50,6 +67,7 @@ public static class EventHolder
         OnUnitDataRequest?.Invoke(unitType, callback);
     }
 }
+
 
 
 /// <summary>
@@ -104,5 +122,10 @@ public interface IMovable
     void Tick(); 
     void ChangeSpeed(float newSpeed); 
     void ChangeDirection(Vector3 newDirection); 
+}
+
+public interface IPickup
+{
+    void PickUp(Transform newParent);
 }
 

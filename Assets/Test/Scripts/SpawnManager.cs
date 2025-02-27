@@ -4,11 +4,13 @@ public class SpawnManager : MonoBehaviour
 {
     private EnergySystem player1Energy;
     private EnergySystem player2Energy;
+    private GameObject ballPrefab;
 
-    public void Initialize(EnergySystem p1Energy, EnergySystem p2Energy)
+    public void Initialize(EnergySystem p1Energy, EnergySystem p2Energy, GameObject ball)
     {
         player1Energy = p1Energy;
         player2Energy = p2Energy;
+        ballPrefab = ball;
     }
 
     private void OnEnable()
@@ -63,8 +65,13 @@ public class SpawnManager : MonoBehaviour
 
     private void SpawnBall(Vector3 spawnPosition)
     {
-        GameObject ball = new GameObject("Ball"); // Replace with actual ball prefab
-        ball.transform.position = spawnPosition;
+        if (ballPrefab == null)
+        {
+            Debug.LogError("Ball prefab is missing in SpawnManager!");
+            return;
+        }
+
+        GameObject ball = Instantiate(ballPrefab, spawnPosition, Quaternion.identity);
         Debug.Log($"Ball spawned at {spawnPosition}");
     }
 }

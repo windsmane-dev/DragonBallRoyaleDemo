@@ -23,6 +23,7 @@ public class Attacker : Unit
     {
         base.Activate();
         StartCoroutine(Tick());
+        EventHolder.TriggerRequestBallStatus(SetChaseBall);
 
     }
 
@@ -35,9 +36,10 @@ public class Attacker : Unit
         }    
     }
 
-    public void SetChaseBall(Vector3 ballPosition)
+    public void SetChaseBall(Vector3 ballPosition, bool isPickedUp)
     {
-        movementHandler.ChangeDirection((ballPosition - transform.position).normalized);
+        if(!isPickedUp)
+            movementHandler.ChangeDirection((ballPosition - transform.position).normalized);
     }
 
     public void MoveStraight()

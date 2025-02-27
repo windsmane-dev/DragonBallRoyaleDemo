@@ -5,13 +5,14 @@ using System.Collections.Generic;
 public class UnitDatabase : ScriptableObject
 {
     public List<UnitEntry> units;
+    public GameObject ballPrefab;
 
     [System.Serializable]
     public class UnitEntry
     {
         public UnitType unitType;
-        public GameObject prefab; 
-        public UnitData unitData; 
+        public GameObject prefab;
+        public UnitData unitData;
     }
 
     public Dictionary<UnitType, GameObject> GetUnitDictionary()
