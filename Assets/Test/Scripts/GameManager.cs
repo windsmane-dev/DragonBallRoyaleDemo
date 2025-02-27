@@ -56,6 +56,8 @@ public class GameManager : MonoBehaviour
         }
 
         spawnManager.Initialize(player1Energy, player2Energy);
+
+        EventHolder.TriggerGameStart();
     }
 
     private T CreateManager<T>(string name) where T : Component
@@ -70,7 +72,7 @@ public class GameManager : MonoBehaviour
     {
         if (UnitFactory != null)
         {
-            UnitFactory.Destroyed(); 
+            UnitFactory.Destroyed();
         }
     }
 }

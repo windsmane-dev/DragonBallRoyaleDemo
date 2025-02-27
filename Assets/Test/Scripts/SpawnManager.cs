@@ -14,11 +14,13 @@ public class SpawnManager : MonoBehaviour
     private void OnEnable()
     {
         EventHolder.OnInputReceived += HandleInput;
+        EventHolder.OnGameStart += RequestBallSpawnPosition;
     }
 
     private void OnDisable()
     {
         EventHolder.OnInputReceived -= HandleInput;
+        EventHolder.OnGameStart -= RequestBallSpawnPosition;
     }
 
     private void HandleInput(Vector3 spawnPosition, LandType landType)
@@ -35,7 +37,6 @@ public class SpawnManager : MonoBehaviour
                 return;
             }
 
-            
             EventHolder.TriggerEnergyRequest(playerID, unitData.energyCost, (success) =>
             {
                 if (success)
@@ -53,5 +54,17 @@ public class SpawnManager : MonoBehaviour
                 }
             });
         });
+    }
+
+    private void RequestBallSpawnPosition()
+    {
+        EventHolder.TriggerRequestLandPosition(SpawnBall);
+    }
+
+    private void SpawnBall(Vector3 spawnPosition)
+    {
+        GameObject ball = new GameObject("Ball"); // Replace with actual ball prefab
+        ball.transform.position = spawnPosition;
+        Debug.Log($"Ball spawned at {spawnPosition}");
     }
 }

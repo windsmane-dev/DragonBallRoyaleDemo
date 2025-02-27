@@ -2,15 +2,28 @@ using System;
 using UnityEngine;
 
 /// <summary>
-/// Holds global enums, interfaces, and events used throughout the game.
+/// Holds global events used throughout the game.
 /// </summary>
 public static class EventHolder
 {
+    public static event Action OnGameStart;
+    public static event Action<Action<Vector3>> OnRequestLandPosition;
+
     public static event Action<Vector3, LandType> OnInputReceived;
     public static event Action<int, int, Action<bool>> OnEnergyRequest;
     public static event Action<int, EnergySystem> OnEnergySystemInitialized;
     public static event Action<int, float, float> OnEnergyUpdated;
     public static event Action<UnitType, Action<UnitData>> OnUnitDataRequest;
+
+    public static void TriggerGameStart()
+    {
+        OnGameStart?.Invoke();
+    }
+
+    public static void TriggerRequestLandPosition(Action<Vector3> callback)
+    {
+        OnRequestLandPosition?.Invoke(callback);
+    }
 
     public static void TriggerInputReceived(Vector3 position, LandType landType)
     {
@@ -37,6 +50,7 @@ public static class EventHolder
         OnUnitDataRequest?.Invoke(unitType, callback);
     }
 }
+
 
 /// <summary>
 /// Defines the selectable objects in the game.
