@@ -27,21 +27,32 @@ public class SpawnManager : MonoBehaviour
         EnergySystem energy = (playerID == 1) ? player1Energy : player2Energy;
         UnitType unitType = (landType == LandType.Attacker) ? UnitType.Attacker : UnitType.Defender;
 
-        EventHolder.TriggerEnergyRequest(playerID, 2, (success) =>
+        EventHolder.TriggerUnitDataRequest(unitType, (unitData) =>
         {
-            if (success)
+            if (unitData == null)
             {
-                GameObject unitObject = GameManager.Instance.UnitFactory.CreateUnit(unitType, spawnPosition, Quaternion.identity);
-
-                if (unitObject.TryGetComponent<IUnit>(out IUnit unit))
-                {
-                    unit.Activate();
-                }
-                else
-                {
-                    Debug.LogError($"Spawned unit of type {unitType} does not implement IUnit!");
-                }
+                Debug.LogError($"No UnitData found for {unitType}!");
+                return;
             }
+
+            
+            EventHolder.TriggerEnergyRequest(playerID, unitData.energyCost, (success) =>
+            {
+                if (success)
+                {
+                    GameObject unitObject = GameManager.Instance.UnitFactory.CreateUnit(unitType, spawnPosition, Quaternion.identity);
+
+                    if (unitObject.TryGetComponent<IUnit>(out IUnit unit))
+                    {
+                        unit.Initialize(unitData); 
+                        unit.Activate();
+                    }
+                    else
+                    {
+                        Debug.LogError($"Spawned unit of type {unitType} does not implement IUnit!");
+                    }
+                }
+            });
         });
     }
 }

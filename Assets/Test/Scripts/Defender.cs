@@ -2,14 +2,41 @@ using UnityEngine;
 
 public class Defender : MonoBehaviour, IUnit
 {
+    private DefenderData defenderData; 
+
+    public void Initialize(UnitData data)
+    {
+        defenderData = data as DefenderData; 
+
+        if (defenderData == null)
+        {
+            Debug.LogError("Invalid DefenderData assigned!");
+        }
+    }
+
     public void Activate()
     {
-        gameObject.SetActive(true);
-        GetComponent<Renderer>().material.color = Color.blue;
+        Debug.Log($"Defender activated with normal speed: {defenderData.normalSpeed}, " +
+                  $"return speed: {defenderData.returnSpeed}, detection range: {defenderData.detectionRange}");
     }
 
     public void Deactivate()
     {
-        gameObject.SetActive(false);
+        Debug.Log("Defender deactivated.");
+    }
+
+    public float GetSpeed()
+    {
+        return defenderData.normalSpeed; 
+    }
+
+    public float GetReturnSpeed()
+    {
+        return defenderData.returnSpeed;
+    }
+
+    public float GetDetectionRange()
+    {
+        return defenderData.detectionRange;
     }
 }

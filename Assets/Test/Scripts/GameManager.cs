@@ -1,12 +1,11 @@
 using UnityEngine;
-using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour
 {
     private static GameManager instance;
     public UnitFactory UnitFactory { get; private set; }
 
-    [SerializeField] private UnitDatabase unitDatabase; // Reference to the Scriptable Object
+    [SerializeField] private UnitDatabase unitDatabase;
 
     public static GameManager Instance
     {
@@ -49,7 +48,7 @@ public class GameManager : MonoBehaviour
 
         if (unitDatabase != null)
         {
-            UnitFactory = new UnitFactory(unitDatabase.GetUnitDictionary(), 10);
+            UnitFactory = new UnitFactory(unitDatabase.GetUnitDictionary(), unitDatabase.GetUnitDataDictionary(), 10);
         }
         else
         {
@@ -65,5 +64,13 @@ public class GameManager : MonoBehaviour
         T manager = obj.AddComponent<T>();
         DontDestroyOnLoad(obj);
         return manager;
+    }
+
+    private void OnDestroy()
+    {
+        if (UnitFactory != null)
+        {
+            UnitFactory.Destroyed(); 
+        }
     }
 }

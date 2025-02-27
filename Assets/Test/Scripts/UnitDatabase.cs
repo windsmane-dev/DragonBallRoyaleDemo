@@ -10,7 +10,8 @@ public class UnitDatabase : ScriptableObject
     public class UnitEntry
     {
         public UnitType unitType;
-        public GameObject prefab; // Changed from MonoBehaviour to GameObject
+        public GameObject prefab; 
+        public UnitData unitData; 
     }
 
     public Dictionary<UnitType, GameObject> GetUnitDictionary()
@@ -22,5 +23,16 @@ public class UnitDatabase : ScriptableObject
                 unitDict[entry.unitType] = entry.prefab;
         }
         return unitDict;
+    }
+
+    public Dictionary<UnitType, UnitData> GetUnitDataDictionary()
+    {
+        Dictionary<UnitType, UnitData> unitDataDict = new Dictionary<UnitType, UnitData>();
+        foreach (var entry in units)
+        {
+            if (entry.unitData != null)
+                unitDataDict[entry.unitType] = entry.unitData;
+        }
+        return unitDataDict;
     }
 }
