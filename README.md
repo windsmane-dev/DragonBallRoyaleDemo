@@ -1,11 +1,11 @@
 # DragonBallRoyaleDemo
 Clash Royale Meets Dragons Meets Balls
 
-Caution:- 
-This is a WIP project. Mechanics as requested are not all implemented yet. 
-Currently using Whiteboxing for visuals. 
+# Caution:- 
+# This is a WIP project. Mechanics as requested are not all implemented yet. 
+# Currently using Whiteboxing for visuals. 
 
-Pending List:- 
+# Pending List:- 
 - Animation
 - Replace Models
 - Add VFX
@@ -13,7 +13,7 @@ Pending List:-
 - Penalty Game
 - AR module
 
-This game uses a SOLID compliant, event driven architecture, made to be scalable in the future. 
+# This game uses a SOLID compliant, event driven architecture, made to be scalable in the future.
 
 TDD:- 
 The aim is to keep the codebase as clean and modular as time permits. 
