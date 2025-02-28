@@ -21,29 +21,43 @@ public class AttackerInteraction : InteractionHandler
     private void PassBallToNearestAttacker()
     {
         List<GameObject> activeAttackers = GameManager.Instance.UnitFactory.GetActiveUnits(UnitType.Attacker);
-        activeAttackers.Remove(attacker.gameObject);
+        activeAttackers.Remove(attacker.gameObject); 
 
         if (activeAttackers.Count == 0)
         {
             Debug.Log("No attackers left to receive the ball. Ending turn.");
+            EventHolder.TriggerEndTurn(); 
+            return;
+        }
+
+        
+        List<Attacker> validAttackers = new List<Attacker>();
+        foreach (GameObject attackerObj in activeAttackers)
+        {
+            if (attackerObj.TryGetComponent<Attacker>(out Attacker otherAttacker) && otherAttacker.IsActive())
+            {
+                validAttackers.Add(otherAttacker);
+            }
+        }
+
+        if (validAttackers.Count == 0)
+        {
+            Debug.Log("No active attackers left. Ending turn.");
             EventHolder.TriggerEndTurn();
             return;
         }
 
-        // Find the closest attacker
+        
         Attacker nearestAttacker = null;
         float minDistance = float.MaxValue;
 
-        foreach (GameObject attackerObj in activeAttackers)
+        foreach (Attacker validAttacker in validAttackers)
         {
-            if (attackerObj.TryGetComponent<Attacker>(out Attacker otherAttacker) && !otherAttacker.HasBall())
+            float distance = Vector3.Distance(attacker.transform.position, validAttacker.transform.position);
+            if (distance < minDistance)
             {
-                float distance = Vector3.Distance(attacker.transform.position, otherAttacker.transform.position);
-                if (distance < minDistance)
-                {
-                    minDistance = distance;
-                    nearestAttacker = otherAttacker;
-                }
+                minDistance = distance;
+                nearestAttacker = validAttacker;
             }
         }
 
@@ -54,7 +68,6 @@ public class AttackerInteraction : InteractionHandler
             {
                 ball.PassToAttacker(nearestAttacker.transform, attacker.GetPassSpeed());
                 attacker.LoseBall();
-                attacker.gameObject.layer = LayerMask.NameToLayer("Player");
             }
         }
         else
@@ -63,5 +76,6 @@ public class AttackerInteraction : InteractionHandler
             EventHolder.TriggerEndTurn();
         }
     }
+
 
 }

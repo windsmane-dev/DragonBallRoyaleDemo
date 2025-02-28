@@ -10,6 +10,8 @@ public class Attacker : Unit
     [SerializeField] private Transform ballPosition;
 
     private Transform parentLand;
+
+    bool isSubscribedToEvent;
     public override void Initialize(UnitData data)
     {
         attackerData = data as AttackerData;
@@ -35,10 +37,12 @@ public class Attacker : Unit
         StartCoroutine(Tick());
         EventHolder.TriggerRequestBallStatus(SetChaseBall);
         EventHolder.OnBallPickedUp += OnBallPickedUp;
+        isSubscribedToEvent = true;
     }
 
     private void OnDisable()
     {
+        if(isSubscribedToEvent)
         EventHolder.OnBallPickedUp -= OnBallPickedUp;
     }
 
@@ -103,7 +107,11 @@ public class Attacker : Unit
     {
         hasBall = false;
         movementHandler.ChangeSpeed(0);
+        gameObject.layer = LayerMask.NameToLayer("Player");
+        EventHolder.OnBallPickedUp -= OnBallPickedUp;
+        isSubscribedToEvent = false;
 
+        StartSpawnTimer(attackerData.reactivateTime);
     }
     public float GetPassSpeed()
     {
@@ -113,4 +121,10 @@ public class Attacker : Unit
     {
         return ballPosition;
     }
+
+    public bool IsActive()
+    {
+        return isActive;
+    }
+
 }

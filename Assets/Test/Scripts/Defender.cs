@@ -75,7 +75,7 @@ public class Defender : Unit
         Debug.Log(other.gameObject.name);
         if (other.TryGetComponent<IInteractable>(out IInteractable interactable))
         {
-            Debug.Log(other.gameObject.name);
+            Debug.Log(other.gameObject.name + "check");
             interactable.Interact(this);
         }
     }

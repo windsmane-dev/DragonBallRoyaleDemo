@@ -11,7 +11,7 @@ public abstract class Unit : MonoBehaviour, IUnit
     {
         unitData = data;
         visualHandler = new UnitVisualHandler(gameObject);
-        StartSpawnTimer();
+        StartSpawnTimer(unitData.spawnTime);
     }
 
     public virtual void Activate()
@@ -27,15 +27,15 @@ public abstract class Unit : MonoBehaviour, IUnit
         Debug.Log($"{gameObject.name} is now inactive!");
     }
 
-    public void StartSpawnTimer()
+    public void StartSpawnTimer(float time)
     {
         Deactivate();
-        StartCoroutine(SpawnDelayRoutine());
+        StartCoroutine(SpawnDelayRoutine(time));
     }
 
-    private IEnumerator SpawnDelayRoutine()
+    private IEnumerator SpawnDelayRoutine(float time)
     {
-        yield return new WaitForSeconds(unitData.spawnTime);
+        yield return new WaitForSeconds(time);
         Activate();
     }
 }
