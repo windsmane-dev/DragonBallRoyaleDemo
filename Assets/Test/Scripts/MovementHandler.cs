@@ -4,18 +4,19 @@ public class MovementHandler : IMovable
 {
     private Transform unitTransform;
     private float speed;
-    private Vector3 direction;
-
-    public MovementHandler(Transform transform, float initialSpeed, Vector3 initialDirection)
+    private Transform parentLand;
+    public MovementHandler(Transform transform, float initialSpeed, Vector3 initialDirection, Transform parentLandTransform)
     {
         unitTransform = transform;
         speed = initialSpeed;
-        direction = initialDirection;
+        parentLand = parentLandTransform;
+        //ChangeDirection(initialDirection); // Ensures the unit is facing the correct direction initially
+        ResetRotation();
     }
 
     public void Tick()
     {
-        unitTransform.position += direction * speed * Time.deltaTime;
+        unitTransform.position += unitTransform.forward * speed * Time.deltaTime;
     }
 
     public void ChangeSpeed(float newSpeed)
@@ -25,6 +26,15 @@ public class MovementHandler : IMovable
 
     public void ChangeDirection(Vector3 newDirection)
     {
-        direction = newDirection.normalized;
+        if (newDirection != Vector3.zero)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(new Vector3(newDirection.x, 0f, newDirection.z).normalized);
+            unitTransform.rotation = targetRotation;
+        }
+    }
+
+    public void ResetRotation()
+    {
+        unitTransform.rotation = parentLand.transform.rotation;
     }
 }

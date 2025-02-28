@@ -71,4 +71,25 @@ public class UnitFactory
             callback(null);
         }
     }
+
+    public List<GameObject> GetActiveUnits(UnitType type)
+    {
+        if (unitPools.ContainsKey(type))
+        {
+            return unitPools[type].GetActiveObjects();
+        }
+        return new List<GameObject>();
+    }
+
+    public void ReturnAllUnits()
+    {
+        foreach (var pool in unitPools.Values)
+        {
+            List<GameObject> activeUnits = pool.GetActiveObjects();
+            foreach (GameObject unit in activeUnits)
+            {
+                pool.ReturnToPool(unit);
+            }
+        }
+    }
 }

@@ -12,11 +12,11 @@ TagManager:
   - Touch
   - Water
   - UI
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Player
+  - Enemy
+  - Ball
+  - PlayerWithBall
+  - Touch
   - 
   - 
   - 

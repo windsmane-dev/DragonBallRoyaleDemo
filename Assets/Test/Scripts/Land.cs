@@ -3,22 +3,36 @@ using UnityEngine;
 public class Land : MonoBehaviour, ISelectable
 {
     [SerializeField] private LandType landType;
+    [SerializeField] private Transform goalTransform;
 
+    public int playerID;
     private void OnEnable()
     {
-        TurnManager.OnTurnSwitch += SwitchRole;
+        EventHolder.OnTurnSwitch += SwitchRole;
         EventHolder.OnRequestLandPosition += ProvideSpawnPosition;
+        EventHolder.OnRequestGoalPosition += ProvideGoalPosition;
+        EventHolder.OnRequestParentLand += ProvideParentLand;
     }
 
     private void OnDisable()
     {
-        TurnManager.OnTurnSwitch -= SwitchRole;
+        EventHolder.OnTurnSwitch -= SwitchRole;
         EventHolder.OnRequestLandPosition -= ProvideSpawnPosition;
+        EventHolder.OnRequestGoalPosition -= ProvideGoalPosition;
+        EventHolder.OnRequestParentLand -= ProvideParentLand;
+    }
+
+    void ProvideParentLand(LandType inType, Action<Transform> callback)
+    {
+        if(inType == landType)
+        {
+            callback(this.transform);
+        } 
     }
 
     public void OnSelect(Vector3 position)
     {
-        EventHolder.TriggerInputReceived(position, landType);
+        EventHolder.TriggerInputReceived(position, landType, playerID);
     }
 
     private void SwitchRole()
@@ -34,6 +48,12 @@ public class Land : MonoBehaviour, ISelectable
             Vector3 spawnPosition = GetRandomPointInLand();
             callback(spawnPosition);
         }
+    }
+
+    private void ProvideGoalPosition(Action<Vector3> callback)
+    {
+        if (landType == LandType.Defender)
+            callback(goalTransform.position);
     }
 
     private Vector3 GetRandomPointInLand()

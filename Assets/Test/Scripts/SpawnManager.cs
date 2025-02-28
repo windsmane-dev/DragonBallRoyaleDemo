@@ -5,6 +5,7 @@ public class SpawnManager : MonoBehaviour
     private EnergySystem player1Energy;
     private EnergySystem player2Energy;
     private GameObject ballPrefab;
+    private GameObject ballObject;
 
     public void Initialize(EnergySystem p1Energy, EnergySystem p2Energy, GameObject ball)
     {
@@ -17,17 +18,18 @@ public class SpawnManager : MonoBehaviour
     {
         EventHolder.OnInputReceived += HandleInput;
         EventHolder.OnGameStart += RequestBallSpawnPosition;
+        EventHolder.OnTurnReset += ResetField;
     }
 
     private void OnDisable()
     {
         EventHolder.OnInputReceived -= HandleInput;
         EventHolder.OnGameStart -= RequestBallSpawnPosition;
+        EventHolder.OnTurnReset -= ResetField;
     }
 
-    private void HandleInput(Vector3 spawnPosition, LandType landType)
+    private void HandleInput(Vector3 spawnPosition, LandType landType, int playerID)
     {
-        int playerID = (landType == LandType.Attacker) ? 1 : 2;
         EnergySystem energy = (playerID == 1) ? player1Energy : player2Energy;
         UnitType unitType = (landType == LandType.Attacker) ? UnitType.Attacker : UnitType.Defender;
 
@@ -71,7 +73,25 @@ public class SpawnManager : MonoBehaviour
             return;
         }
 
-        GameObject ball = Instantiate(ballPrefab, spawnPosition, Quaternion.identity);
+        if(ballObject == null)
+        {
+            ballObject = Instantiate(ballPrefab, spawnPosition, Quaternion.identity);
+        }
+        else
+        {
+            ballObject.SetActive(true);
+            ballObject.SendMessage("Init", spawnPosition);
+        }
+        
         Debug.Log($"Ball spawned at {spawnPosition}");
+    }
+
+    private void ResetField()
+    {
+        Debug.Log("Resetting field: Returning all units to pool and removing ball.");
+        ballObject.SendMessage("ResetBall");
+        ballObject.SetActive(false);
+        GameManager.Instance.UnitFactory.ReturnAllUnits();
+        Invoke("RequestBallSpawnPosition", 0.5f);
     }
 }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 public class PoolManager<T> where T : Object
 {
     private Queue<T> poolQueue = new Queue<T>();
+    private List<T> activeObjects = new List<T>();
     private T prefab;
     private Transform parentContainer;
 
@@ -24,6 +25,7 @@ public class PoolManager<T> where T : Object
         {
             gameObject.transform.SetPositionAndRotation(position, rotation);
             gameObject.SetActive(true);
+            activeObjects.Add(obj);
         }
 
         return obj;
@@ -34,8 +36,19 @@ public class PoolManager<T> where T : Object
         if (obj is GameObject gameObject)
         {
             gameObject.SetActive(false);
+            activeObjects.Remove(obj);
             poolQueue.Enqueue(obj);
         }
+    }
+
+    public bool Contains(T obj)
+    {
+        return poolQueue.Contains(obj);
+    }
+
+    public List<GameObject> GetActiveObjects()
+    {
+        return activeObjects.ConvertAll(obj => obj as GameObject);
     }
 
     private void ExpandPool(int amount)
@@ -45,10 +58,5 @@ public class PoolManager<T> where T : Object
             T obj = Object.Instantiate(prefab, parentContainer);
             poolQueue.Enqueue(obj);
         }
-    }
-
-    public bool Contains(T obj)
-    {
-        return poolQueue.Contains(obj);
     }
 }

@@ -45,6 +45,8 @@ public class GameManager : MonoBehaviour
         player2Energy.Initialize(2);
 
         TurnManager turnManager = CreateManager<TurnManager>("TurnManager");
+        ScoreManager scoreManager = CreateManager<ScoreManager>("ScoreManager");
+
 
         if (unitDatabase != null)
         {
