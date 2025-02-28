@@ -49,10 +49,12 @@ public class UnitFactory
 
     public void ReturnUnit(GameObject unit)
     {
+        Debug.Log("In Return Unit Call UnitFactory");
         foreach (var pool in unitPools.Values)
         {
             if (pool.Contains(unit))
             {
+                Debug.Log("Calling Pool Factory");
                 pool.ReturnToPool(unit);
                 return;
             }

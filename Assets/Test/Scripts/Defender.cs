@@ -20,22 +20,22 @@ public class Defender : Unit
             Debug.LogError("Invalid DefenderData assigned!");
             return;
         }
-
-        base.Initialize(data);
         EventHolder.TriggerRequestParentLand(LandType.Defender, parentTransfom => { parentLand = parentTransfom; });
         movementHandler = new MovementHandler(transform, data.normalSpeed, Vector3.forward, parentLand);
         InteractionWrapper wrapper = gameObject.AddComponent<InteractionWrapper>();
         interactionHandler = new DefenderInteraction(this);
         wrapper.Initialize(interactionHandler);
-      
+        stateBehaviour = new DefenderStateBehaviour(this, defenderData, detectionRangeObject);
         SetDetectionRadius();
+
+        base.Initialize(data);
     }
 
     public override void Activate()
     {
         base.Activate();
-        stateBehaviour = new DefenderStateBehaviour(this, defenderData, detectionRangeObject);
-        StartCoroutine(Tick());
+        Debug.Log("Activation Called");
+        stateBehaviour.OnActivated();
     }
     private void SetDetectionRadius()
     {
@@ -43,6 +43,7 @@ public class Defender : Unit
         float detectionRadius = fieldWidth * (defenderData.detectionRange / 100f);
         detectionRangeObject.transform.localScale = Vector3.one * detectionRadius;
         detectionRangeObject.SendMessage("SetDefenderObject", this);
+        detectionRangeObject.SetActive(false);
     }
 
     private float GetFieldWidth()
@@ -53,37 +54,36 @@ public class Defender : Unit
 
     IEnumerator Tick()
     {
-        while (isActive)
+        while (true)
         {
             stateBehaviour.UpdateState();
-            yield return new WaitForSeconds(Time.deltaTime);
-        }
-    }
-
-    IEnumerator MovementTick()
-    {
-        while (isActive)
-        {
             movementHandler.Tick();
             yield return new WaitForSeconds(Time.deltaTime);
         }
-
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log(other.gameObject.name);
         if (other.TryGetComponent<IInteractable>(out IInteractable interactable))
         {
-            Debug.Log(other.gameObject.name + "check");
             interactable.Interact(this);
         }
     }
 
+   //private void OnTriggerStay(Collider other)
+   //{
+   //    Debug.Log(other.gameObject.name);
+   //    if (other.TryGetComponent<IInteractable>(out IInteractable interactable))
+   //    {
+   //        Debug.Log(other.gameObject.name + "check");
+   //        interactable.Interact(this);
+   //    }
+   //}
+
     void OnAttackerDetected(Attacker attacker)
     {
         stateBehaviour.OnAttackerDetected(attacker);
-        StartCoroutine(MovementTick());
+        StartCoroutine(Tick());
     }
     public void Move(Vector3 direction, float speed)
     {
@@ -109,7 +109,9 @@ public class Defender : Unit
 
     public void Stationary()
     {
-        StopCoroutine(MovementTick());
+        movementHandler.ChangeSpeed(0);
+        movementHandler.ResetRotation();
+        StopCoroutine(Tick());
     }
 
     public float GetReturnSpeed()

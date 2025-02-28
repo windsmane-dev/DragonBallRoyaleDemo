@@ -35,6 +35,7 @@ public class PoolManager<T> where T : Object
     {
         if (obj is GameObject gameObject)
         {
+            Debug.Log("Returning to Pool" + gameObject.name);
             gameObject.SetActive(false);
             activeObjects.Remove(obj);
             poolQueue.Enqueue(obj);
@@ -43,7 +44,7 @@ public class PoolManager<T> where T : Object
 
     public bool Contains(T obj)
     {
-        return poolQueue.Contains(obj);
+        return activeObjects.Contains(obj);
     }
 
     public List<GameObject> GetActiveObjects()

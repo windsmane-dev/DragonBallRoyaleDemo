@@ -26,7 +26,8 @@ public class AttackerInteraction : InteractionHandler
         if (activeAttackers.Count == 0)
         {
             Debug.Log("No attackers left to receive the ball. Ending turn.");
-            EventHolder.TriggerEndTurn(); 
+            EventHolder.TriggerRoundEnd(RoundResult.DefenderPoint);
+            //EventHolder.TriggerEndTurn(); 
             return;
         }
 
@@ -43,7 +44,7 @@ public class AttackerInteraction : InteractionHandler
         if (validAttackers.Count == 0)
         {
             Debug.Log("No active attackers left. Ending turn.");
-            EventHolder.TriggerEndTurn();
+            EventHolder.TriggerRoundEnd(RoundResult.DefenderPoint);
             return;
         }
 
@@ -73,7 +74,7 @@ public class AttackerInteraction : InteractionHandler
         else
         {
             Debug.Log("No valid attackers found. Ending turn.");
-            EventHolder.TriggerEndTurn();
+            EventHolder.TriggerRoundEnd(RoundResult.DefenderPoint);
         }
     }
 

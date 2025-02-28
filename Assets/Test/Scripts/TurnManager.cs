@@ -9,10 +9,19 @@ public class TurnManager : MonoBehaviour
     private void OnEnable()
     {
         EventHolder.OnTurnSwitch += SwitchTurn;
+        EventHolder.OnRequestTurnInfo += ProvideTurnInfo; 
     }
+
+    private void ProvideTurnInfo(Action<int> callback)
+    {
+        callback(GetCurrentTurn());
+
+    }
+
     private void OnDisable()
     {
         EventHolder.OnTurnSwitch -= SwitchTurn;
+        EventHolder.OnRequestTurnInfo -= ProvideTurnInfo;
     }
     public void SwitchTurn()
     {

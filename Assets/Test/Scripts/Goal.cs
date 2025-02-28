@@ -7,7 +7,7 @@ public class Goal : MonoBehaviour, IInteractable
         if (interactingUnit is Attacker attacker && attacker.HasBall())
         {
             Debug.Log("Goal reached! Ending turn.");
-            EventHolder.TriggerEndTurn();
+            EventHolder.TriggerRoundEnd(RoundResult.AttackerPoint);
         }
     }
 }

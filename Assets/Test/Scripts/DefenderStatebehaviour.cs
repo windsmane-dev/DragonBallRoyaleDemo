@@ -15,7 +15,6 @@ public class DefenderStateBehaviour
         this.defenderData = data;
         this.detectionRangeObject = detectionRangeObj;
         originalPosition = defender.transform.position;
-        SetStandbyState();
     }
 
     public void UpdateState()
@@ -33,10 +32,11 @@ public class DefenderStateBehaviour
         }
     }
 
-    private void SetStandbyState()
+     void SetStandbyState()
     {
         currentState = DefenderState.Standby;
         detectionRangeObject.SetActive(true);
+        defender.IgnoreCollisions(false);
         defender.Stationary();
     }
 
@@ -53,7 +53,14 @@ public class DefenderStateBehaviour
         currentState = DefenderState.Inactive;
         detectionRangeObject.SetActive(false);
         defender.IgnoreCollisions(true);
-        defender.StartCoroutine(ReactivateAfterTime());
+        
+        Vector3 direction = (originalPosition - defender.transform.position).normalized;
+        direction.y = 0f;
+        defender.Move(direction, defenderData.returnSpeed);
+
+        defender.StartSpawnTimer(defenderData.reactivateTime);
+        //defender.StartCoroutine(ReactivateAfterTime());
+            
     }
 
     private void ChaseTarget()
@@ -71,22 +78,29 @@ public class DefenderStateBehaviour
 
     private void MoveBackToOriginalPosition()
     {
-        Vector3 direction = (originalPosition - defender.transform.position).normalized;
-        direction.y = 0f;
-        defender.Move(direction, defenderData.returnSpeed);
-
         if (Vector3.Distance(defender.transform.position, originalPosition) < 0.1f)
         {
-            SetStandbyState();
-            defender.IgnoreCollisions(false);
+            defender.Stationary();
         }
     }
 
     private IEnumerator ReactivateAfterTime()
     {
+        
+        if(defender.TryGetComponent<IUnit>(out var unit))
+        {
+            Debug.Log("Deactivating LULU");
+            unit.Deactivate();
+        }
         yield return new WaitForSeconds(defenderData.reactivateTime);
-        SetStandbyState();
         defender.IgnoreCollisions(false);
+        if(unit != null)
+        {
+            unit.Activate();
+            Debug.Log("Activating LULU");
+        }
+        SetStandbyState();
+
     }
 
     public void OnAttackerDetected(Attacker attacker)
@@ -101,5 +115,10 @@ public class DefenderStateBehaviour
     {
         Debug.Log("setting Inactive State");
         SetInactiveState();
+    }
+
+    public void OnActivated()
+    {
+        SetStandbyState();
     }
 }

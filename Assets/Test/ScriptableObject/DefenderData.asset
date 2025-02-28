@@ -15,7 +15,7 @@ MonoBehaviour:
   unitType: 0
   energyCost: 3
   spawnTime: 0.5
-  reactivateTime: 4
+  reactivateTime: 2
   normalSpeed: 1
   returnSpeed: 2
-  detectionRange: 35
+  detectionRange: 50

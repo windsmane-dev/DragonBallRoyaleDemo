@@ -25,11 +25,16 @@ public static class EventHolder
     public static event Action<int> OnScropeUpdated;
     public static event Action<Action<int>> OnRequestTurnInfo;
     public static event Action OnTurnReset;
-
+    public static event Action<RoundResult> OnRoundEnd;
     //Game Flow Event Triggers
     public static void TriggerTurnReset()
     {
         OnTurnReset?.Invoke();
+    }
+
+    public static void TriggerRoundEnd(RoundResult result)
+    {
+        OnRoundEnd?.Invoke(result);
     }
     
     public static void TriggerGameStart()
@@ -172,6 +177,13 @@ public enum DefenderState
     Standby,
     Chasing,
     Inactive
+}
+
+public enum RoundResult
+{
+    AttackerPoint,
+    DefenderPoint,
+    Draw
 }
 
 public class InteractionWrapper : MonoBehaviour, IInteractable

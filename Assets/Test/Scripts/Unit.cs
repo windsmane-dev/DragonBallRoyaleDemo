@@ -5,7 +5,7 @@ public abstract class Unit : MonoBehaviour, IUnit
 {
     protected UnitData unitData;
     protected UnitVisualHandler visualHandler;
-    protected bool isActive = false;
+    [SerializeField]protected bool isActive = false;
 
     public virtual void Initialize(UnitData data)
     {

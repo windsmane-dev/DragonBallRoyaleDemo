@@ -6,7 +6,8 @@ public class Attacker : Unit
     private IMovable movementHandler;
     private AttackerData attackerData;
     private AttackerInteraction interactionHandler;
-    private bool hasBall = false;
+    protected bool hasBall = false;
+
     [SerializeField] private Transform ballPosition;
 
     private Transform parentLand;
@@ -34,10 +35,20 @@ public class Attacker : Unit
     public override void Activate()
     {
         base.Activate();
-        StartCoroutine(Tick());
+        movementHandler.ChangeSpeed(attackerData.normalSpeed);
         EventHolder.TriggerRequestBallStatus(SetChaseBall);
         EventHolder.OnBallPickedUp += OnBallPickedUp;
         isSubscribedToEvent = true;
+
+
+        StartCoroutine(Tick());
+        
+    }
+
+    public override void Deactivate()
+    {
+        base.Deactivate();
+        StopCoroutine(Tick());
     }
 
     private void OnDisable()
@@ -48,7 +59,7 @@ public class Attacker : Unit
 
     IEnumerator Tick()
     {
-        while (isActive)
+        while (true)
         {
             movementHandler.Tick();
             yield return new WaitForSeconds(Time.deltaTime);
