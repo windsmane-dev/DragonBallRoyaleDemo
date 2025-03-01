@@ -7,4 +7,7 @@ public abstract class UnitData : ScriptableObject // Made abstract to prevent di
     public float spawnTime; // Time required for spawning
     public float reactivateTime; // Time before the unit can act again
     public float normalSpeed; // Movement speed
+    public Material deactivatedMat;
+    public Material activatedMat;
+    public GameObject spawnVFX, despawnVFX, activateVFX, deactivateVFX;
 }

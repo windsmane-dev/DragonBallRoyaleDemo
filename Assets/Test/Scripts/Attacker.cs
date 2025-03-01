@@ -55,6 +55,7 @@ public class Attacker : Unit
     {
         if(isSubscribedToEvent)
         EventHolder.OnBallPickedUp -= OnBallPickedUp;
+        visualHandler.OnDespawn(attackerData.despawnVFX);
     }
 
     IEnumerator Tick()

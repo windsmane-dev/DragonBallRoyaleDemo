@@ -17,5 +17,15 @@ MonoBehaviour:
   spawnTime: 0.5
   reactivateTime: 2
   normalSpeed: 1
+  deactivatedMat: {fileID: 2100000, guid: 0526c5be35ba93547acf614ed1950a2f, type: 2}
+  activatedMat: {fileID: 2100000, guid: 5fcde950c31077243850f23d14ba9a5a, type: 2}
+  spawnVFX: {fileID: 8286068161152591239, guid: f6ccc7f4701d7804dbbcbed9a6efa712,
+    type: 3}
+  despawnVFX: {fileID: 5007752678101014402, guid: 28771f4d18687d44ebcb95043bb6bb3e,
+    type: 3}
+  activateVFX: {fileID: 8217196965019813298, guid: 3aa7586b55cbff542b13c314357b4b73,
+    type: 3}
+  deactivateVFX: {fileID: 8523230730625820456, guid: 680e60d243d0d4e46b8c2f9f90ab3d5d,
+    type: 3}
   returnSpeed: 2
   detectionRange: 50

@@ -5,8 +5,6 @@ public class GameManager : MonoBehaviour
     private static GameManager instance;
     public UnitFactory UnitFactory { get; private set; }
     public GameObject floor;
-    public GameObject mazeStartPoint;
-    public GameObject mazeEndPoint;
     [SerializeField] private UnitDatabase unitDatabase;
 
     public static GameManager Instance
@@ -48,8 +46,7 @@ public class GameManager : MonoBehaviour
 
         TurnManager turnManager = CreateManager<TurnManager>("TurnManager");
         ScoreManager scoreManager = CreateManager<ScoreManager>("ScoreManager");
-        MazeGenerator mazeGenerator = CreateManager<MazeGenerator>("MazeGenerator");
-        mazeGenerator.Initialize(floor, unitDatabase.wallPrefab, unitDatabase.mazeUnit, unitDatabase.ballPrefab);
+
 
         if (unitDatabase != null)
         {
@@ -60,11 +57,10 @@ public class GameManager : MonoBehaviour
             Debug.LogError("Unit Database is missing in GameManager!");
         }
 
-        //spawnManager.Initialize(player1Energy, player2Energy, unitDatabase.ballPrefab);
-        //EventHolder.TriggerGameStart();
+        spawnManager.Initialize(player1Energy, player2Energy, unitDatabase.ballPrefab);
+        EventHolder.TriggerGameStart();
 
-
-        mazeGenerator.GenerateMaze(mazeStartPoint.transform, mazeEndPoint.transform);
+        
     }
 
     private T CreateManager<T>(string name) where T : Component

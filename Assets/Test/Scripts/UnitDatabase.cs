@@ -14,6 +14,7 @@ public class UnitDatabase : ScriptableObject
         public UnitType unitType;
         public GameObject prefab;
         public UnitData unitData;
+
     }
 
     public Dictionary<UnitType, GameObject> GetUnitDictionary()

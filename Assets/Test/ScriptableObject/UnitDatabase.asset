@@ -23,3 +23,5 @@ MonoBehaviour:
     unitData: {fileID: 11400000, guid: 983bf7036838aca44aae0179ad8ab3f1, type: 2}
   ballPrefab: {fileID: 3983712756578159203, guid: 8812b27ae99cc9541b3c5b4ea0b8ee37,
     type: 3}
+  wallPrefab: {fileID: 144206, guid: 9de82ec743bb24449a99f5cf1e325d61, type: 3}
+  mazeUnit: {fileID: 100000, guid: 22a45a6811b874ea5b8a8ef9244a0f11, type: 3}
