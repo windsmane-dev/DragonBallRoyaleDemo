@@ -26,10 +26,28 @@ public static class EventHolder
     public static event Action<Action<int>> OnRequestTurnInfo;
     public static event Action OnTurnReset;
     public static event Action<RoundResult> OnRoundEnd;
+    public static event Action<int, int> OnScoreUpdate;
+    public static event Action OnGameEndReached;
+    public static event Action OnDrawMatch;
     //Game Flow Event Triggers
     public static void TriggerTurnReset()
     {
         OnTurnReset?.Invoke();
+    }
+
+    public static void TriggerMazeSpawnOnDraw()
+    {
+        OnDrawMatch?.Invoke();
+    }
+
+
+    public static void TriggerGameEndCheck()
+    {
+        OnGameEndReached?.Invoke();
+    }
+    public static void TriggerScoreUpdate(int playerScore, int EnemyScore) 
+    {
+        OnScoreUpdate?.Invoke(playerScore, EnemyScore);  
     }
 
     public static void TriggerRoundEnd(RoundResult result)
@@ -97,11 +115,6 @@ public static class EventHolder
     public static void TriggerEndTurn()
     {
         OnTurnSwitch?.Invoke();
-    }
-
-    public static void TriggerScoreUpdate(int playerID)
-    {
-        OnScropeUpdated?.Invoke(playerID);
     }
 
     public static void TriggerRequestTurnInfo(Action<int> callback)

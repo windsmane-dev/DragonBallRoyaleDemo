@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 //<summary>
 //Game object, that creates maze and instantiates it in scene
@@ -26,12 +27,17 @@ public class MazeSpawner : MonoBehaviour {
 	public bool AddGaps = true;
 	public GameObject GoalPrefab = null;
 
+
 	private BasicMazeGenerator mMazeGenerator = null;
 
-	void Start () {
+	private List<Vector2> goalCells;
+    public void GenerateMaze (GameObject player) 
+	{
 		if (!FullRandom) {
 			Random.seed = RandomSeed;
 		}
+
+		goalCells = new List<Vector2>();
 		switch (Algorithm) {
 		case MazeGenerationAlgorithm.PureRecursive:
 			mMazeGenerator = new RecursiveMazeGenerator (Rows, Columns);
@@ -74,9 +80,12 @@ public class MazeSpawner : MonoBehaviour {
 					tmp = Instantiate(Wall,new Vector3(x,0,z-CellHeight/2)+Wall.transform.position,Quaternion.Euler(0,180,0)) as GameObject;// back
 					tmp.transform.parent = transform;
 				}
-				if(cell.IsGoal && GoalPrefab != null){
-					tmp = Instantiate(GoalPrefab,new Vector3(x,1,z), Quaternion.Euler(0,0,0)) as GameObject;
-					tmp.transform.parent = transform;
+				if(cell.IsGoal && GoalPrefab != null)
+				{
+					//tmp = Instantiate(GoalPrefab,new Vector3(x,1,z), Quaternion.Euler(0,0,0)) as GameObject;
+					//tmp.transform.parent = transform;
+
+					goalCells.Add(new Vector2(x, z));
 				}
 			}
 		}
@@ -90,5 +99,27 @@ public class MazeSpawner : MonoBehaviour {
 				}
 			}
 		}
+
+		//instantiating the player and the ball
+		if(goalCells.Count > 0)
+        {
+			int randomIndex = Random.Range(0, goalCells.Count);
+			Vector3 pos = goalCells[randomIndex];
+			Instantiate(GoalPrefab, pos, Quaternion.Euler(0, 0, 0), transform);
+			goalCells.RemoveAt(randomIndex);
+
+
+
+
+			randomIndex = Random.Range(0, goalCells.Count);
+			pos = goalCells[randomIndex];
+			Instantiate(player, pos, Quaternion.Euler(0, 0, 0), transform);
+
+		}
+
+
+		//this is currently hardcoded to save time.
+		transform.localScale = Vector3.one * 0.35f;
+		transform.position = new Vector3(-3.5f, 0, -7f);
 	}
 }

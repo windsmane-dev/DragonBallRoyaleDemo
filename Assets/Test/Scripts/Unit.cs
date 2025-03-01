@@ -24,7 +24,9 @@ public abstract class Unit : MonoBehaviour, IUnit
 
         visualHandler.OnSpawn(unitData.spawnVFX);
 
-        StartSpawnTimer(unitData.spawnTime);
+        isActive = false;
+        visualHandler.SetUnitMaterial(unitData.deactivatedMat);
+        StartCoroutine(SpawnDelayRoutine(unitData.spawnTime));
     }
 
     public virtual void Activate()

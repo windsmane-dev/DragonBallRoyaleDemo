@@ -19,6 +19,7 @@ public class SpawnManager : MonoBehaviour
         EventHolder.OnInputReceived += HandleInput;
         EventHolder.OnGameStart += RequestBallSpawnPosition;
         EventHolder.OnTurnReset += ResetField;
+        EventHolder.OnGameEndReached += ResetFieldAndDontRequestBall;
     }
 
     private void OnDisable()
@@ -26,6 +27,14 @@ public class SpawnManager : MonoBehaviour
         EventHolder.OnInputReceived -= HandleInput;
         EventHolder.OnGameStart -= RequestBallSpawnPosition;
         EventHolder.OnTurnReset -= ResetField;
+        EventHolder.OnGameEndReached -= ResetFieldAndDontRequestBall;
+    }
+
+    void ResetFieldAndDontRequestBall()
+    {
+        ballObject.SendMessage("ResetBall");
+        ballObject.SetActive(false);
+        GameManager.Instance.UnitFactory.ReturnAllUnits();
     }
 
     private void HandleInput(Vector3 spawnPosition, LandType landType, int playerID)

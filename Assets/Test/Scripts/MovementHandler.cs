@@ -22,6 +22,7 @@ public class MovementHandler : IMovable
     public void ChangeSpeed(float newSpeed)
     {
         speed = newSpeed;
+        Debug.Log("NEW SPEED" + newSpeed);
     }
 
     public void ChangeDirection(Vector3 newDirection)

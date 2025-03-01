@@ -84,25 +84,6 @@ public class DefenderStateBehaviour
         }
     }
 
-    private IEnumerator ReactivateAfterTime()
-    {
-        
-        if(defender.TryGetComponent<IUnit>(out var unit))
-        {
-            Debug.Log("Deactivating LULU");
-            unit.Deactivate();
-        }
-        yield return new WaitForSeconds(defenderData.reactivateTime);
-        defender.IgnoreCollisions(false);
-        if(unit != null)
-        {
-            unit.Activate();
-            Debug.Log("Activating LULU");
-        }
-        SetStandbyState();
-
-    }
-
     public void OnAttackerDetected(Attacker attacker)
     {
         if (currentState == DefenderState.Standby)

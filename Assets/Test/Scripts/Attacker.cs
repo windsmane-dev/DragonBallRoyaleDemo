@@ -40,7 +40,6 @@ public class Attacker : Unit
         EventHolder.OnBallPickedUp += OnBallPickedUp;
         isSubscribedToEvent = true;
 
-
         StartCoroutine(Tick());
         
     }
@@ -48,7 +47,8 @@ public class Attacker : Unit
     public override void Deactivate()
     {
         base.Deactivate();
-        StopCoroutine(Tick());
+        //StopCoroutine(Tick());
+        movementHandler.ChangeSpeed(0);
     }
 
     private void OnDisable()

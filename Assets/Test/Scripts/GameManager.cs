@@ -57,6 +57,10 @@ public class GameManager : MonoBehaviour
             Debug.LogError("Unit Database is missing in GameManager!");
         }
 
+        if(TryGetComponent<MazeGenerator>(out var mazemanager))
+        {
+            mazemanager.SetPlayer(unitDatabase.mazeUnit);
+        }
         spawnManager.Initialize(player1Energy, player2Energy, unitDatabase.ballPrefab);
         EventHolder.TriggerGameStart();
 

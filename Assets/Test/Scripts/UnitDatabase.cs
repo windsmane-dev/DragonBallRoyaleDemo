@@ -6,7 +6,6 @@ public class UnitDatabase : ScriptableObject
 {
     public List<UnitEntry> units;
     public GameObject ballPrefab;
-    public GameObject wallPrefab;
     public GameObject mazeUnit;
     [System.Serializable]
     public class UnitEntry

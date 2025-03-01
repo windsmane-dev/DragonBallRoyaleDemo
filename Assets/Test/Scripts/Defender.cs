@@ -98,7 +98,6 @@ public class Defender : Unit
 
     public void OnAttackerCaught()
     {
-        Debug.Log("Defender Script");
         stateBehaviour.OnAttackerCaught();
     }
 

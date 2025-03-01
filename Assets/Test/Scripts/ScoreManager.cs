@@ -10,11 +10,31 @@ public class ScoreManager : MonoBehaviour
     private void Start()
     {
         EventHolder.OnRoundEnd += OnRoundEnd;
+        EventHolder.OnGameEndReached += GameEndCheck;
+        EventHolder.TriggerScoreUpdate(playerScore, enemyScore);
     }
 
     private void OnDestroy()
     {
         EventHolder.OnRoundEnd -= OnRoundEnd;
+        EventHolder.OnGameEndReached -= GameEndCheck;
+    }
+
+    void GameEndCheck()
+    {
+        if(playerScore > enemyScore)
+        {
+            //trigger game win
+        }
+        else if(playerScore == enemyScore)
+        {
+            //trigger game draw, enable maze
+            EventHolder.TriggerMazeSpawnOnDraw();
+        }
+        else
+        {
+            //trigger Game Loss;
+        }
     }
     void OnRoundEnd(RoundResult in_Result)
     {
@@ -52,6 +72,10 @@ public class ScoreManager : MonoBehaviour
                 break;
         }
 
+        Debug.Log("Should send trigger to update score");
+
+
+        EventHolder.TriggerScoreUpdate(playerScore, enemyScore);
         EventHolder.TriggerEndTurn();
     }
 }

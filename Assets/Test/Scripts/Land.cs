@@ -12,6 +12,7 @@ public class Land : MonoBehaviour, ISelectable
         EventHolder.OnRequestLandPosition += ProvideSpawnPosition;
         EventHolder.OnRequestGoalPosition += ProvideGoalPosition;
         EventHolder.OnRequestParentLand += ProvideParentLand;
+        EventHolder.OnDrawMatch += DisableLand;
     }
 
     private void OnDisable()
@@ -20,6 +21,12 @@ public class Land : MonoBehaviour, ISelectable
         EventHolder.OnRequestLandPosition -= ProvideSpawnPosition;
         EventHolder.OnRequestGoalPosition -= ProvideGoalPosition;
         EventHolder.OnRequestParentLand -= ProvideParentLand;
+        EventHolder.OnDrawMatch -= DisableLand;
+    }
+
+    void DisableLand()
+    {
+        this.gameObject.SetActive(false);
     }
 
     void ProvideParentLand(LandType inType, Action<Transform> callback)
