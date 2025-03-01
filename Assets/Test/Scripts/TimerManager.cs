@@ -15,6 +15,8 @@ public class TimerManager : MonoBehaviour
     void Start()
     {
         EventHolder.OnTurnReset += ResetTimer;
+        currentTime = maxTime;
+        StartCoroutine(CountDown());
     }
 
     private void OnDestroy()
@@ -37,7 +39,7 @@ public class TimerManager : MonoBehaviour
         {
             currentTime -= Time.deltaTime;
             temp = Mathf.Round(currentTime * 10f) * 0.1f;
-            timerImage.fillAmount = 1- currentTime / maxTime;
+            timerImage.fillAmount = currentTime / maxTime;
             timerText.text = temp.ToString();
             yield return new WaitForSeconds(Time.deltaTime);
         }
