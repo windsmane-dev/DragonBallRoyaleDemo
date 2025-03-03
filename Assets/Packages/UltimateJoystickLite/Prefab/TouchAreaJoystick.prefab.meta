@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 537cbeafe104a1246ad9226444f88326
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 255569
+  packageName: Ultimate Joystick PRO
+  packageVersion: 3.0
+  assetPath: Assets/UltimateJoystickPro/Prefab/TouchAreaJoystick.prefab
+  uploadId: 694924

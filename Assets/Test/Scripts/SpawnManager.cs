@@ -6,7 +6,7 @@ public class SpawnManager : MonoBehaviour
     private EnergySystem player2Energy;
     private GameObject ballPrefab;
     private GameObject ballObject;
-
+    private GameObject GlobalParent;
     public void Initialize(EnergySystem p1Energy, EnergySystem p2Energy, GameObject ball)
     {
         player1Energy = p1Energy;

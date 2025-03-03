@@ -11,6 +11,7 @@ public static class EventHolder
     public static event Action<Action<Vector3>> OnRequestLandPosition;
     public static event Action<Action<Vector3>> OnRequestGoalPosition;
     public static event Action<LandType, Action<Transform>> OnRequestParentLand;
+    public static event Action<bool> OnLoadingScreenEnabled;
     //Ball Tracking Events
     public static event Action<Action<Vector3, bool>> OnRequestBallStatus; 
     public static event Action OnBallPickedUp; 
@@ -29,10 +30,20 @@ public static class EventHolder
     public static event Action<int, int> OnScoreUpdate;
     public static event Action OnGameEndReached;
     public static event Action OnDrawMatch;
+    public static event Action<int> OnTotalTurnCountUpdated;
     //Game Flow Event Triggers
     public static void TriggerTurnReset()
     {
         OnTurnReset?.Invoke();
+    }
+
+    public static void TriggerLoadingScreen(bool shouldShow)
+    {
+        OnLoadingScreenEnabled?.Invoke(shouldShow);
+    }
+    public static void TriggerTotalTurnCountUpdate(int totalTurn)
+    {
+        OnTotalTurnCountUpdated?.Invoke(totalTurn);
     }
 
     public static void TriggerMazeSpawnOnDraw()
@@ -141,6 +152,8 @@ public interface IUnit
     void Initialize(UnitData data);
     void Activate();
     void Deactivate();
+
+    void DeInitialize();
 }
 
 /// <summary>

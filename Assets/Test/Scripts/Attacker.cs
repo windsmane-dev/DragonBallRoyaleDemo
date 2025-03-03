@@ -29,7 +29,7 @@ public class Attacker : Unit
         interactionHandler = new AttackerInteraction(this);
         wrapper.Initialize(interactionHandler);
 
-        
+        isInitialized = true;
     }
 
     public override void Activate()
@@ -54,9 +54,15 @@ public class Attacker : Unit
     private void OnDisable()
     {
         if(isSubscribedToEvent)
-        EventHolder.OnBallPickedUp -= OnBallPickedUp;
+        {
+            isSubscribedToEvent = false;
+            EventHolder.OnBallPickedUp -= OnBallPickedUp;
+        }
+        
+
         visualHandler.OnDespawn(attackerData.despawnVFX);
     }
+    
 
     IEnumerator Tick()
     {

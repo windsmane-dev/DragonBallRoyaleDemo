@@ -5,7 +5,7 @@ public abstract class Unit : MonoBehaviour, IUnit
 {
     public UnitData unitData;
     protected UnitVisualHandler visualHandler;
-
+    public bool isInitialized;
     public GameObject renderObject;
     public Animator anim;
     [SerializeField]protected bool isActive = false;
@@ -55,5 +55,10 @@ public abstract class Unit : MonoBehaviour, IUnit
     {
         yield return new WaitForSeconds(time);
         Activate();
+    }
+
+    public void DeInitialize()
+    {
+       
     }
 }

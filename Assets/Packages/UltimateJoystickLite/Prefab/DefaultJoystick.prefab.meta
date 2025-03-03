@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: a09c080eece23c242bc304ec6d588012
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 255569
+  packageName: Ultimate Joystick PRO
+  packageVersion: 3.0
+  assetPath: Assets/UltimateJoystickPro/Prefab/DefaultJoystick.prefab
+  uploadId: 694924

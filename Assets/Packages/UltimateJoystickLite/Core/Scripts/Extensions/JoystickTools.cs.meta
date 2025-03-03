@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: e314939e9e2e83840bb18978624e75ae
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 255569
+  packageName: Ultimate Joystick PRO
+  packageVersion: 3.0
+  assetPath: Assets/UltimateJoystickPro/Core/Scripts/Extensions/JoystickTools.cs
+  uploadId: 694924

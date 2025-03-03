@@ -6,7 +6,7 @@ public class TurnManager : MonoBehaviour
 
     private int currentTurn = 1;
 
-    private int TotalTurns;
+    private int TotalTurns = 1; // as we always start the turn from 1, not zero. 
     private void OnEnable()
     {
         EventHolder.OnTurnSwitch += SwitchTurn;
@@ -29,8 +29,8 @@ public class TurnManager : MonoBehaviour
         currentTurn = (currentTurn == 1) ? 2 : 1;
         Debug.Log($"Turn switched! Now it's Player {currentTurn}'s turn.");
         TotalTurns++;
-
-        if (TotalTurns < 5)
+        EventHolder.TriggerTotalTurnCountUpdate(TotalTurns);
+        if (TotalTurns <= 5)
             EventHolder.TriggerTurnReset();
         else
             EventHolder.TriggerGameEndCheck();

@@ -27,7 +27,7 @@ public class MazeSpawner : MonoBehaviour {
 	public bool AddGaps = true;
 	public GameObject GoalPrefab = null;
 
-
+	public GameObject mazeParent;
 	private BasicMazeGenerator mMazeGenerator = null;
 
 	private List<Vector2> goalCells;
@@ -56,29 +56,38 @@ public class MazeSpawner : MonoBehaviour {
 			break;
 		}
 		mMazeGenerator.GenerateMaze ();
-		for (int row = 0; row < Rows; row++) {
-			for(int column = 0; column < Columns; column++){
+		for (int row = 0; row < Rows; row++) 
+		{
+			for(int column = 0; column < Columns; column++)
+			{
 				float x = column*(CellWidth+(AddGaps?.2f:0));
 				float z = row*(CellHeight+(AddGaps?.2f:0));
 				MazeCell cell = mMazeGenerator.GetMazeCell(row,column);
 				GameObject tmp;
 				tmp = Instantiate(Floor,new Vector3(x,0,z), Quaternion.Euler(0,0,0)) as GameObject;
-				tmp.transform.parent = transform;
-				if(cell.WallRight){
-					tmp = Instantiate(Wall,new Vector3(x+CellWidth/2,0,z)+Wall.transform.position,Quaternion.Euler(0,90,0)) as GameObject;// right
-					tmp.transform.parent = transform;
+				tmp.transform.parent = mazeParent.transform;
+				tmp.transform.localPosition = new Vector3(x, 0, z);
+				
+				if (cell.WallRight)
+				{
+					tmp = Instantiate(Wall, mazeParent.transform) as GameObject;// right
+					tmp.transform.localPosition = new Vector3(x + CellWidth / 2, 0, z) + Wall.transform.position;
+					tmp.transform.localRotation = Quaternion.Euler(0, 90, 0);
 				}
 				if(cell.WallFront){
-					tmp = Instantiate(Wall,new Vector3(x,0,z+CellHeight/2)+Wall.transform.position,Quaternion.Euler(0,0,0)) as GameObject;// front
-					tmp.transform.parent = transform;
+					tmp = Instantiate(Wall, mazeParent.transform) as GameObject;// front
+					tmp.transform.localPosition = new Vector3(x, 0, z + CellHeight / 2) + Wall.transform.position;
+					tmp.transform.localRotation = Quaternion.Euler(0, 0, 0);
 				}
 				if(cell.WallLeft){
-					tmp = Instantiate(Wall,new Vector3(x-CellWidth/2,0,z)+Wall.transform.position,Quaternion.Euler(0,270,0)) as GameObject;// left
-					tmp.transform.parent = transform;
+					tmp = Instantiate(Wall, mazeParent.transform) as GameObject;// left
+					tmp.transform.localPosition = new Vector3(x - CellWidth / 2, 0, z) + Wall.transform.position;
+					tmp.transform.localRotation = Quaternion.Euler(0, 270, 0);
 				}
 				if(cell.WallBack){
-					tmp = Instantiate(Wall,new Vector3(x,0,z-CellHeight/2)+Wall.transform.position,Quaternion.Euler(0,180,0)) as GameObject;// back
-					tmp.transform.parent = transform;
+					tmp = Instantiate(Wall, mazeParent.transform) as GameObject;// back
+					tmp.transform.localPosition = new Vector3(x, 0, z - CellHeight / 2) + Wall.transform.position;
+					tmp.transform.localRotation = Quaternion.Euler(0, 180, 0);
 				}
 				if(cell.IsGoal && GoalPrefab != null)
 				{
@@ -89,23 +98,16 @@ public class MazeSpawner : MonoBehaviour {
 				}
 			}
 		}
-		if(Pillar != null){
-			for (int row = 0; row < Rows+1; row++) {
-				for (int column = 0; column < Columns+1; column++) {
-					float x = column*(CellWidth+(AddGaps?.2f:0));
-					float z = row*(CellHeight+(AddGaps?.2f:0));
-					GameObject tmp = Instantiate(Pillar,new Vector3(x-CellWidth/2,0,z-CellHeight/2),Quaternion.identity) as GameObject;
-					tmp.transform.parent = transform;
-				}
-			}
-		}
 
 		//instantiating the player and the ball
 		if(goalCells.Count > 0)
         {
 			int randomIndex = Random.Range(0, goalCells.Count);
 			Vector3 pos = goalCells[randomIndex];
-			Instantiate(GoalPrefab, pos, Quaternion.Euler(0, 0, 0), transform);
+			pos.z = pos.y;
+			pos.y = 0;
+			GameObject obj = Instantiate(GoalPrefab, mazeParent.transform) as GameObject;
+			obj.transform.localPosition = pos;
 			goalCells.RemoveAt(randomIndex);
 
 
@@ -113,13 +115,17 @@ public class MazeSpawner : MonoBehaviour {
 
 			randomIndex = Random.Range(0, goalCells.Count);
 			pos = goalCells[randomIndex];
-			Instantiate(player, pos, Quaternion.Euler(0, 0, 0), transform);
+			pos.z = pos.y;
+			pos.y = 0;
+
+			obj = Instantiate(player, mazeParent.transform);
+			obj.transform.localPosition = pos;
 
 		}
 
 
 		//this is currently hardcoded to save time.
-		transform.localScale = Vector3.one * 0.35f;
-		transform.position = new Vector3(-3.5f, 0, -7f);
+		mazeParent.transform.localScale = new Vector3(0.35f, 0.35f, 0.233625f);
+		mazeParent.transform.localPosition = new Vector3(-3.64f, 0, -4.69f);
 	}
 }

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 2dd5ac59255e8af418c11f974d168543
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 255569
+  packageName: Ultimate Joystick PRO
+  packageVersion: 3.0
+  assetPath: Assets/UltimateJoystickPro/Materials/DefultGround.mat
+  uploadId: 694924

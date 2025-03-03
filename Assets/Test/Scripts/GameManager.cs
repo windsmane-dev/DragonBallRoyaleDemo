@@ -35,6 +35,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        
+    }
+
     private void InitializeManagers()
     {
         SpawnManager spawnManager = CreateManager<SpawnManager>("SpawnManager");
@@ -62,6 +67,8 @@ public class GameManager : MonoBehaviour
             mazemanager.SetPlayer(unitDatabase.mazeUnit);
         }
         spawnManager.Initialize(player1Energy, player2Energy, unitDatabase.ballPrefab);
+
+        EventHolder.TriggerLoadingScreen(false);
         EventHolder.TriggerGameStart();
 
         
